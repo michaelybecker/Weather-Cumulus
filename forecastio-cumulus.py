@@ -85,10 +85,11 @@ def two():
 
 def three():
     cprint("Enter Query: \n", 'cyan')
-    cprint("(1) Minute Data for the next hour \n", 'cyan')
-    cprint("(2) Hourly Data for the next 48 hours \n", 'cyan')
-    cprint("(3) Daily Data for the next week  \n", 'cyan')
-    cprint("(4) Quit to Main Menu \n", 'red')
+    cprint("(1) Minute Total Data for the next hour \n", 'cyan')
+    cprint("(2) Hourly Total Data for the next 48 hours \n", 'cyan')
+    cprint("(3) Daily Total Data for the next week  \n", 'cyan')
+    cprint("(4) Specific Criteria Query  \n", 'cyan')
+    cprint("(5) Quit to Main Menu \n", 'red')
 
     advquery = raw_input(">")
     if advquery == "1":
@@ -101,6 +102,20 @@ def three():
         timeunit = 'daily'
         readunit = 'day'
     elif advquery == "4":
+        timeunit = raw_input("Enter Time Unit: \n>")
+        criteria = raw_input("Enter Criteria: \n>")
+        i = 0
+        for datadicts in parsed_json[timeunit]['data']:
+            # newdict = parsed_json[timeunit]['data'][0]
+            print("%s %i: \n" % (timeunit, i))
+            i += 1
+            for key, value in datadicts.items():
+                if (key == criteria):
+                    cprint("%s: %s" % (key, value), 'blue')
+            print ("\n")
+        three()
+
+    elif advquery == "5":
         print(chr(27) + "[2J")
         main()
 
@@ -119,6 +134,7 @@ def three():
             if (key != "icon"):
                 cprint("%s: %s \n" % (key, value), 'blue')
         print ("\n\n")
+    three()
 
 
 def experiment():
