@@ -49,7 +49,7 @@ def main():
         cprint("Enter Query: \n", 'cyan')
         cprint("(1) Forecast for today \n", 'cyan')
         cprint("(2) Forecast for this week \n", 'cyan')
-        cprint("(3) Advanced Queries \n", 'cyan')
+        cprint("(3) Advanced Prediction Queries \n", 'cyan')
         cprint("(4) Quit \n", 'red')
 
         mainquery = raw_input(">")
@@ -92,13 +92,14 @@ def three():
 
     advquery = raw_input(">")
     if advquery == "1":
-        newdict = parsed_json['minutely']['data'][0]
+        timeunit = 'minutely'
+        readunit = 'minute'
     elif advquery == "2":
-        newdict = parsed_json['hourly']['data'][0]
+        timeunit = 'hourly'
+        readunit = 'hour'
     elif advquery == "3":
-        newdict = parsed_json['daily']['data'][0]
-    elif advquery.upper() == "X":
-        pass
+        timeunit = 'daily'
+        readunit = 'day'
     elif advquery == "4":
         print(chr(27) + "[2J")
         main()
@@ -107,14 +108,17 @@ def three():
         cprint("Not a Query. \n", 'cyan')
 
         # jsonfile = forecast.json
-    newdict = parsed_json['hourly']['data'][0]
     # for key, value in newdict.values():
     #    print("%s: %s \n" % (key, value))
-
-    for key, value in newdict.items():
-        if (key != "icon"):
-            cprint("%s: %s \n" % (key, value), 'blue')
-    print ("\n\n\n\n\n")
+    i = 0
+    for datadicts in parsed_json[timeunit]['data']:
+        # newdict = parsed_json[timeunit]['data'][0]
+        print("%s %i: \n\n\n" % (readunit, i))
+        i += 1
+        for key, value in datadicts.items():
+            if (key != "icon"):
+                cprint("%s: %s \n" % (key, value), 'blue')
+        print ("\n\n")
 
 
 def experiment():
