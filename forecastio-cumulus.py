@@ -15,12 +15,14 @@ api_key = "f71f75cd9e99dbc211c6e48ceaae557c"
 home_lat = 47.705936
 home_long = -122.320500
 time = (2015, 4, 14, 2, 17)
-forecast = forecastio.load_forecast(api_key, home_lat, home_long)
+callback = "callback"
+forecast = forecastio.load_forecast(api_key, home_lat, home_long,
+                                    callback=[callback])
 
 # for instances where the wrapper doesn't work:
 manualforecast = urllib2.urlopen("https://api.forecast.io/forecast/"
                                  "f71f75cd9e99dbc211c6e48ceaae557c/"
-                                 "47.705936,-122.320500")
+                                 "47.705936,-122.320500 callback=[callback]")
 json_string = manualforecast.read()
 
 parsed_json = json.loads(json_string)
