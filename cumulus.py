@@ -50,7 +50,7 @@ def historyweather():
     timeto = int(yearto + monthto + dayto)
 
     if (timeto - timefrom) > 30:
-        print ("Please select a shorter timmerange")
+        print ("Please select a shorter time range")
         historyweather()
     else:
         try:
@@ -72,7 +72,29 @@ def historyweather():
             historyweather()
 
 
+def forecast3():
+
+    state = raw_input("Enter State:\n>")
+    city = raw_input("Enter City:\n>")
+    try:
+        f = urllib2.urlopen('http://api.wunderground.com/api/19e8ddc94141aec0/'
+                            'forecast10day/q/'
+                            + state + '/' + city + '.json')
+        json_string = f.read()
+        parsed_json = json.loads(json_string)
+        for datadicts in parsed_json['forecast']["simpleforecast"]["forecastday"]:
+            for key, value in datadicts.items():
+                if (key != "icon_url") and (key != "icon") and (key != "pop"):
+                    print("%s: %s \n \n" % (key, value))
+        # print(parsed_json)
+        f.close()
+    except KeyError:
+        cprint("Failed to find location. Please try again.", 'cyan', 'on_red')
+        currentweather()
+
+
 def main():
+    """main program window"""
     print(chr(27) + "[2J")
     print ("\n\n\n\n\n\n\n\n\n")
     cprint(figlet_format('CUMULUS', font='basic'), 'cyan',
@@ -82,13 +104,24 @@ def main():
 
     while True:
         cprint("Enter Query: \n", 'cyan')
+        cprint("(1) Current Weather \n", 'cyan')
+        cprint("(2) Historical Weather Query \n", 'cyan')
+        cprint("(3) 10 Day Forecast \n", 'cyan')
+        cprint("(4) Quit \n", 'red')
+
         mainquery = raw_input(">")
-        if mainquery == "current weather":
+        if mainquery == "1":
             currentweather()
-        elif mainquery == "quit":
-            quit()
-        elif mainquery == "weather history":
+        elif mainquery == "2":
             historyweather()
+        elif mainquery == "3":
+            forecast3()
+        # elif mainquery.upper() == "X":
+        #     experiment()
+        elif mainquery == "4":
+            print(chr(27) + "[2J")
+            quit()
+
         else:
             cprint("Not a Query. \n", 'cyan')
 
